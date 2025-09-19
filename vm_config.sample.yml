@@ -2,7 +2,7 @@ qemu_arch: x86_64
 enable_kvm: true
 boot: menu=on
 cdrom: /home/{USER}/{ANY_PATH}/OS.iso
-drive: file=/home/{USER}/{ANY_PATH}/Image.img
+drive: file=/home/{USER}/{ANY_PATH}/Image.qcow2
 memory: 4G
 cpu: host
 vga: virtio

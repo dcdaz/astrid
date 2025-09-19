@@ -18,7 +18,7 @@ qemu_arch: x86_64
 enable_kvm: true
 boot: menu=on
 cdrom: /home/{USER}/{ANY_PATH}/OS.iso
-drive: file=/home/{USER}/{ANY_PATH}/Image.img
+drive: file=/home/{USER}/{ANY_PATH}/Image.qcow2
 memory: 4G
 cpu: host
 vga: virtio
@@ -30,10 +30,10 @@ display: sdl,gl=on
 ### Create an Image
 
 ```bash
-astrid -c ImageName.img ImageSize
+astrid -c ImageName.qcow2 ImageSize
 ```
 
-> Sample `astrid -c debian.img 40G`
+> Sample `astrid -c debian.qcow2 40G`
 
 ### List configs
 

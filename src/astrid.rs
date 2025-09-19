@@ -51,11 +51,16 @@ fn run_vm(config: Configuration, args: Vec<String>) {
         }
         add_args(&mut command, vm_config.boot, "-boot");
         add_args(&mut command, vm_config.cdrom, "-cdrom");
-        add_args(&mut command, vm_config.drive, "-drive");
+        match vm_config.drive {
+            Some(arg) => command.args(["-drive", format!("file={}", arg).as_str()]),
+            None => &mut command
+        };
         add_args(&mut command, vm_config.memory, "-m");
         add_args(&mut command, vm_config.cpu, "-cpu");
         add_args(&mut command, vm_config.vga, "-vga");
         add_args(&mut command, vm_config.display, "-display");
+
+        println!("{:#?}", command);
         command.spawn().expect("Failed to execute command");
 }
 

@@ -1,7 +1,7 @@
 use config::{Config, File};
 use serde::Deserialize;
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize)]
 pub struct VMConfig {
     pub qemu_arch: String,
     pub enable_kvm: bool,

@@ -7,3 +7,15 @@ edition = "2024"
 serde = { version = "1.0.225",  features = ["derive"] }
 dirs = "6.0.0"
 config = { version = "0.15.15", features = ["yaml"] }
+
+[profile.release]
+opt-level = 3
+debug = false
+rpath = false
+lto = false
+debug-assertions = false
+codegen-units = 16
+panic = 'unwind'
+incremental = false
+overflow-checks = false
+strip = true

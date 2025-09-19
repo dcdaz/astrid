@@ -1,7 +1,7 @@
 use config::{Config, ConfigError, File};
 use serde::Deserialize;
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize)]
 pub struct Configuration {
     pub vms_path: String
 }

@@ -6,6 +6,7 @@ pub struct VMConfig {
     pub qemu_arch: String,
     pub enable_kvm: bool,
     pub boot: Option<String>,
+    pub cdrom: Option<String>,
     pub drive: Option<String>,
     pub memory: Option<String>,
     pub cpu: Option<String>,

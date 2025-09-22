@@ -9,10 +9,22 @@ pub fn run_astrid(args: Vec<String>) {
     match args[1].as_str() {
         "-c" => create_image(config, args),
         "-l" => list_vms(config),
-        "-n" => run_vm(config, args),
+        "-r" => run_vm(config, args),
         "-h" => print_help(),
         _ => print_help(),
     }
+}
+
+pub fn print_help() {
+    println!(
+        r#"
+        astrid works with the following args:
+            -c ImageName ImageSize  -> creates images
+            -l                      -> list all vm configs
+            -r ConfigName           -> run a vm config
+            -h                      -> prints this help menu
+        "#
+    )
 }
 
 fn create_image(config: Configuration, args: Vec<String>) {
@@ -46,39 +58,6 @@ fn run_vm(config: Configuration, args: Vec<String>) {
 
         let qemu_command= format!("qemu-system-{}",vm_config.qemu_arch);
         let mut command = Command::new(qemu_command);
-        if vm_config.enable_kvm {
-            command.arg("-enable-kvm");
-        }
-        add_args(&mut command, vm_config.boot, "-boot");
-        add_args(&mut command, vm_config.cdrom, "-cdrom");
-        match vm_config.drive {
-            Some(arg) => command.args(["-drive", format!("file={}", arg).as_str()]),
-            None => &mut command
-        };
-        add_args(&mut command, vm_config.memory, "-m");
-        add_args(&mut command, vm_config.cpu, "-cpu");
-        add_args(&mut command, vm_config.vga, "-vga");
-        add_args(&mut command, vm_config.display, "-display");
-
-        println!("{:#?}", command);
+        command.args(vm_config.get_command_args());
         command.spawn().expect("Failed to execute command");
-}
-
-pub fn print_help() {
-    println!(
-        r#"
-        astrid works with the following args:
-            -c ImageName ImageSize  -> creates images
-            -l                      -> list all vm configs
-            -n ConfigName           -> run a vm config
-            -h                      -> prints this help menu
-        "#
-    )
-}
-
-fn add_args(command: &mut Command, possible_arg: Option<String>, arg_name: &str) {
-    match possible_arg {
-        Some(arg) => command.args([arg_name, arg.as_str()]),
-        None => command
-    };
 }

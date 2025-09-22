@@ -55,7 +55,7 @@ haiku.yml
 To run a config just provide name of `yml` file
 
 ```bash
-astrid -n debian
+astrid -r debian
 ```
 
 > Command above wil launch a qemu instance with your VM in it

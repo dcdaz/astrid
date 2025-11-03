@@ -1,9 +1,10 @@
 qemu_arch: x86_64
-enable_kvm: true
-boot: menu=on
+boot: menu=off
 cdrom: /home/{USER}/{ANY_PATH}/OS.iso
 drive: /home/{USER}/{ANY_PATH}/Image.qcow2
 memory: 4G
-cpu: host
+cpu_type: host
+cpu_cores: 2
+usb_devices: 0x0y:0001,0a0b:0002
 vga: virtio
 display: sdl,gl=on

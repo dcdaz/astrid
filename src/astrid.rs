@@ -33,7 +33,7 @@ fn create_image(config: Configuration, args: Vec<String>) {
         config.vms_path,
         &args[2]
     );
-    // For now only create Qcow2 images
+    // Currently it creates Qcow2 images, not sure if add more types
     Command::new("qemu-img")
         .args(["create", "-f", "qcow2", image_path.as_str(), &args[3]])
         .spawn()

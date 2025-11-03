@@ -4,12 +4,13 @@ use serde::Deserialize;
 #[derive(Deserialize)]
 pub struct VMConfig {
     pub qemu_arch: String,
-    pub enable_kvm: bool,
     pub boot: Option<String>,
     pub cdrom: Option<String>,
     pub drive: Option<String>,
     pub memory: Option<String>,
-    pub cpu: Option<String>,
+    pub cpu_type: Option<String>,
+    pub cpu_cores: Option<String>,
+    pub usb_devices: Option<String>,
     pub vga: Option<String>,
     pub display: Option<String>,
 }
@@ -24,9 +25,7 @@ impl VMConfig {
 
     pub fn get_command_args(&self) -> Vec<String> {
         let mut args = Vec::new();
-        if self.enable_kvm {
-            args.push("-enable-kvm".to_string());
-        }
+        args.push("-enable-kvm".to_string());
 
         if self.boot.is_some() {
             args.push("-boot".to_string());
@@ -48,9 +47,28 @@ impl VMConfig {
             args.push(self.memory.as_ref().unwrap().into());
         }
 
-        if self.cpu.is_some() {
+        if self.cpu_type.is_some() {
             args.push("-cpu".to_string());
-            args.push(self.cpu.as_ref().unwrap().into());
+            args.push(self.cpu_type.as_ref().unwrap().into());
+        }
+
+        if self.cpu_cores.is_some() {
+            args.push("-smp".to_string());
+            args.push(self.cpu_cores.as_ref().unwrap().into());
+        }
+
+        if self.usb_devices.is_some() {
+            args.push("-usb".to_string());
+            self.usb_devices.clone().unwrap().split(",").into_iter().for_each(|device| {
+                let usb_identifier = device.split(":").collect::<Vec<&str>>();
+                args.push(
+                    format!(
+                        "-device usb-host,vendorid=0x{},productionid=0x{}",
+                        usb_identifier[0],
+                        usb_identifier[1]
+                    )
+                );
+            });
         }
 
         if self.vga.is_some() {
